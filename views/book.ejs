@@ -9,46 +9,49 @@
   <meta name="author" content="<%= book.author?.[0]?.name || 'Unknown Author' %>" />
 
 
-  <!-- Open Graph (WhatsApp, Facebook, Instagram) -->
+<!-- Open Graph (WhatsApp, Facebook, Instagram) -->
 <meta property="og:title" content="<%= book.name %>" />
-<meta property="og:description" content="
-  <%= 
-    (
-      (book.description ? book.description.replace(/<[^>]+>/g, '').substring(0, 600) : 'No description available') 
-      + ' | Author: ' + book.author 
-      + ' | Price: ' + (book.discounted_price ? book.discounted_price : book.price) + ' KES' 
-      + (book.rating > 0 ? ' | Rating: ' + book.rating + '/5' : '')
-    ).trim() 
-  %>" 
-/>
+<meta property="og:description" content="By <%= book.author?.[0]?.name %> · 
+Price: 
+<% if (book.discountedPrice && book.discountedPrice > 0) { %>
+  <%= book.currency %> <%= book.price %> → Now <%= book.currency %> <%= book.discountedPrice %>
+<% } else { %>
+  <%= book.currency %> <%= book.price %>
+<% } %>
+<% if (book.averageRating && book.averageRating > 0) { %>
+ · Rating: <%= book.averageRating %>/5 ⭐
+<% } %>
+ — <%= book.description.replace(/<[^>]+>/g, '').substring(0, 200) %>" />
 <meta property="og:image" content="<%= book.image || 'https://sharemybook.online/default-cover.jpg' %>" />
 <meta property="og:url" content="https://sharemybook.online/<%= book.slug %>" />
 <meta property="og:type" content="book" />
 
-<meta property="book:author" content="<%= book.author %>" />
-<meta property="book:price:amount" content="<%= book.discounted_price ? book.discounted_price : book.price %>" />
-<meta property="book:price:currency" content="KES" />
-<% if (book.rating > 0) { %>
-  <meta property="book:rating:value" content="<%= book.rating %>" />
+<meta property="book:author" content="<%= book.author?.[0]?.name %>" />
+<meta property="book:price:amount" content="<%= book.discountedPrice && book.discountedPrice > 0 ? book.discountedPrice : book.price %>" />
+<meta property="book:price:currency" content="<%= book.currency %>" />
+<% if (book.averageRating && book.averageRating > 0) { %>
+  <meta property="book:rating:value" content="<%= book.averageRating %>" />
   <meta property="book:rating:scale" content="5" />
 <% } %>
 
 <!-- Twitter Cards -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="<%= book.name %>" />
-<meta name="twitter:description" content="
-  <%= 
-    (
-      (book.description ? book.description.replace(/<[^>]+>/g, '').substring(0, 600) : 'No description available') 
-      + ' | Author: ' + book.author 
-      + ' | Price: ' + (book.discounted_price ? book.discounted_price : book.price) + ' KES' 
-      + (book.rating > 0 ? ' | Rating: ' + book.rating + '/5' : '')
-    ).trim() 
-  %>" 
-/>
+<meta name="twitter:description" content="By <%= book.author?.[0]?.name %> · 
+Price: 
+<% if (book.discountedPrice && book.discountedPrice > 0) { %>
+  <%= book.currency %> <%= book.price %> → Now <%= book.currency %> <%= book.discountedPrice %>
+<% } else { %>
+  <%= book.currency %> <%= book.price %>
+<% } %>
+<% if (book.averageRating && book.averageRating > 0) { %>
+ · Rating: <%= book.averageRating %>/5 ⭐
+<% } %>
+ — <%= book.description.replace(/<[^>]+>/g, '').substring(0, 200) %>" />
 <meta name="twitter:image" content="<%= book.image || 'https://sharemybook.online/default-cover.jpg' %>" />
 <meta name="twitter:url" content="https://sharemybook.online/<%= book.slug %>" />
 <meta name="twitter:site" content="@sharemybook" /> <!-- Replace with your Twitter handle -->
+
 
 
 </head>
