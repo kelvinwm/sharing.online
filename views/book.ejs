@@ -8,12 +8,22 @@
   <meta name="description" content="<%= book.description.replace(/<[^>]+>/g, '').substring(0, 160) %>" />
   <meta name="author" content="<%= book.author?.[0]?.name || 'Unknown Author' %>" />
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="<%= book.name %>" />
-  <meta property="og:description" content="<%= book.description.replace(/<[^>]+>/g, '').substring(0, 200) %>" />
-  <meta property="og:image" content="<%= book.image %>" />
-  <meta property="og:url" content="https://sharemybook.online/<%= book.slug %>" />
-  <meta property="og:type" content="book" />
+ <!-- Open Graph (for WhatsApp) -->
+<meta property="og:title" content="<%= book.name %>" />
+<meta property="og:description" content="
+By <%= book.author?.[0]?.name %> · 
+Price: 
+<% if (book.discountedPrice && book.discountedPrice > 0) { %>
+  <%= book.currency %> <%= book.price %> → Now <%= book.currency %> <%= book.discountedPrice %>
+<% } else { %>
+  <%= book.currency %> <%= book.price %>
+<% } %> · 
+Rating: <%= book.averageRating %>/5 ⭐
+ — <%= book.description.replace(/<[^>]+>/g, '').substring(0, 200) %>" />
+<meta property="og:image" content="<%= book.image %>" />
+<meta property="og:url" content="https://sharemybook.online/<%= book.slug %>" />
+<meta property="og:type" content="book" />
+
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
