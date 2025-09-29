@@ -8,57 +8,85 @@
   <meta name="description" content="<%= book.description.replace(/<[^>]+>/g, '').substring(0, 160) %>" />
   <meta name="author" content="<%= book.author?.[0]?.name || 'Unknown Author' %>" />
 
+  <!-- Open Graph (WhatsApp, Facebook, Instagram) -->
+  <meta property="og:title" content="<%= book.name %>" />
+  <meta property="og:description" content="By <%= book.author?.[0]?.name || 'Unknown Author' %> · 
+  Price: 
+  <% if (book.discountedPrice && book.discountedPrice > 0) { %>
+    <%= book.currency %> <%= book.price %> → Now <%= book.currency %> <%= book.discountedPrice %>
+  <% } else { %>
+    <%= book.currency %> <%= book.price %>
+  <% } %>
+  <% if (book.averageRating && book.averageRating > 0) { %>
+   · Rating: <%= book.averageRating %>/5 ⭐
+  <% } %>
+   — <%= book.description.replace(/<[^>]+>/g, '').substring(0, 197).trim() %>..." />
+  <meta property="og:image" content="<%= book.image || 'https://sharemybook.online/default-cover.jpg' %>" />
+  <meta property="og:url" content="https://sharemybook.online/<%= book.slug %>" />
+  <meta property="og:type" content="book" />
+  <meta property="og:site_name" content="ShareMyBook" />
 
-<!-- Open Graph (WhatsApp, Facebook, Instagram) -->
-<meta property="og:title" content="<%= book.name %>" />
-<meta property="og:description" content="By <%= book.author?.[0]?.name %> · 
-Price: 
-<% if (book.discountedPrice && book.discountedPrice > 0) { %>
-  <%= book.currency %> <%= book.price %> → Now <%= book.currency %> <%= book.discountedPrice %>
-<% } else { %>
-  <%= book.currency %> <%= book.price %>
-<% } %>
-<% if (book.averageRating && book.averageRating > 0) { %>
- · Rating: <%= book.averageRating %>/5 ⭐
-<% } %>
- — <%= book.description.replace(/<[^>]+>/g, '').substring(0, 200) %>" />
-<meta property="og:image" content="<%= book.image || 'https://sharemybook.online/default-cover.jpg' %>" />
-<meta property="og:url" content="https://sharemybook.online/<%= book.slug %>" />
-<meta property="og:type" content="book" />
+  <meta property="book:author" content="<%= book.author?.[0]?.name || 'Unknown Author' %>" />
+  <meta property="book:price:amount" content="<%= (book.discountedPrice && book.discountedPrice > 0 ? book.discountedPrice : book.price) || '0' %>" />
+  <meta property="book:price:currency" content="<%= book.currency || 'USD' %>" />
+  <% if (book.averageRating && book.averageRating > 0) { %>
+    <meta property="book:rating:value" content="<%= book.averageRating %>" />
+    <meta property="book:rating:scale" content="5" />
+  <% } %>
 
-<meta property="book:author" content="<%= book.author?.[0]?.name %>" />
-<meta property="book:price:amount" content="<%= book.discountedPrice && book.discountedPrice > 0 ? book.discountedPrice : book.price %>" />
-<meta property="book:price:currency" content="<%= book.currency %>" />
-<% if (book.averageRating && book.averageRating > 0) { %>
-  <meta property="book:rating:value" content="<%= book.averageRating %>" />
-  <meta property="book:rating:scale" content="5" />
-<% } %>
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="<%= book.name %>" />
+  <meta name="twitter:description" content="By <%= book.author?.[0]?.name || 'Unknown Author' %> · 
+  Price: 
+  <% if (book.discountedPrice && book.discountedPrice > 0) { %>
+    <%= book.currency %> <%= book.price %> → Now <%= book.currency %> <%= book.discountedPrice %>
+  <% } else { %>
+    <%= book.currency %> <%= book.price %>
+  <% } %>
+  <% if (book.averageRating && book.averageRating > 0) { %>
+   · Rating: <%= book.averageRating %>/5 ⭐
+  <% } %>
+   — <%= book.description.replace(/<[^>]+>/g, '').substring(0, 197).trim() %>..." />
+  <meta name="twitter:image" content="<%= book.image || 'https://sharemybook.online/default-cover.jpg' %>" />
+  <meta name="twitter:image:alt" content="<%= book.name %> by <%= book.author?.[0]?.name || 'Unknown Author' %>" />
+  <meta name="twitter:url" content="https://sharemybook.online/<%= book.slug %>" />
+  <meta name="twitter:site" content="@sharemybook" /> <!-- Replace with your Twitter handle -->
 
-<!-- Twitter Cards -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="<%= book.name %>" />
-<meta name="twitter:description" content="By <%= book.author?.[0]?.name %> · 
-Price: 
-<% if (book.discountedPrice && book.discountedPrice > 0) { %>
-  <%= book.currency %> <%= book.price %> → Now <%= book.currency %> <%= book.discountedPrice %>
-<% } else { %>
-  <%= book.currency %> <%= book.price %>
-<% } %>
-<% if (book.averageRating && book.averageRating > 0) { %>
- · Rating: <%= book.averageRating %>/5 ⭐
-<% } %>
- — <%= book.description.replace(/<[^>]+>/g, '').substring(0, 200) %>" />
-<meta name="twitter:image" content="<%= book.image || 'https://sharemybook.online/default-cover.jpg' %>" />
-<meta name="twitter:url" content="https://sharemybook.online/<%= book.slug %>" />
-<meta name="twitter:site" content="@sharemybook" /> <!-- Replace with your Twitter handle -->
+  <!-- Schema.org JSON-LD for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    "name": "<%= book.name %>",
+    "author": {
+      "@type": "Person",
+      "name": "<%= book.author?.[0]?.name || 'Unknown Author' %>"
+    },
+    "image": "<%= book.image || 'https://sharemybook.online/default-cover.jpg' %>",
+    "description": "<%= book.description.replace(/<[^>]+>/g, '').substring(0, 197).trim() %>",
+    "publisher": "<%= book.publisher %>",
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "<%= book.currency || 'USD' %>",
+      "price": "<%= (book.discountedPrice && book.discountedPrice > 0 ? book.discountedPrice : book.price) || '0' %>",
+      "availability": "https://schema.org/InStock"
+    }
+  }
+  </script>
 
-
-
+  <!-- Redirect humans after 2s -->
+  <script>
+    setTimeout(() => {
+      window.location.href = "https://hlpbooks.netlify.app/books/<%= book.slug %>";
+    }, 2000);
+  </script>
 </head>
 <body>
   <h1><%= book.name %></h1>
-  <p>Author: <%= book.author?.[0]?.name %></p>
-  <img src="<%= book.image %>" alt="<%= book.name %>" style="max-width:300px;" />
+  <p>Author: <%= book.author?.[0]?.name || 'Unknown Author' %></p>
+  <img src="<%= book.image || 'https://sharemybook.online/default-cover.jpg' %>" alt="<%= book.name %>" style="max-width:300px;" />
   <div><%- book.description %></div>
+  <p>Redirecting to the full book page...</p>
 </body>
 </html>
