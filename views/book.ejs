@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title><%= book.name %> - <%= book.publisher %></title>
+  <meta name="description" content="<%= book.description.replace(/<[^>]+>/g, '').substring(0, 160) %>" />
+  <meta name="author" content="<%= book.author?.[0]?.name || 'Unknown Author' %>" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="<%= book.name %>" />
+  <meta property="og:description" content="<%= book.description.replace(/<[^>]+>/g, '').substring(0, 200) %>" />
+  <meta property="og:image" content="<%= book.image %>" />
+  <meta property="og:url" content="https://sharemybook.online/<%= book.slug %>" />
+  <meta property="og:type" content="book" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="<%= book.name %>" />
+  <meta name="twitter:description" content="<%= book.description.replace(/<[^>]+>/g, '').substring(0, 200) %>" />
+  <meta name="twitter:image" content="<%= book.image %>" />
+</head>
+<body>
+  <h1><%= book.name %></h1>
+  <p>Author: <%= book.author?.[0]?.name %></p>
+  <img src="<%= book.image %>" alt="<%= book.name %>" style="max-width:300px;" />
+  <div><%- book.description %></div>
+</body>
+</html>
