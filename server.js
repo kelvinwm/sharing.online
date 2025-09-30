@@ -99,6 +99,49 @@ app.get("/:slug", async (req, res) => {
   res.redirect(301, `https://hlpbooks.netlify.app/books/${slug}`);
 });
 
+async function getBookBySlug(slug) {
+  try {
+    const response = await axios.post(
+      "https://dev.quiltreader.com/adminportal/api/getbookdetails",
+      { slug },
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    );
+
+    const data = response.data;
+
+    if (!data || !data.data || !data.data.bookDetails || !data.data.bookDetails.length) {
+      return null;
+    }
+
+    const book = data.data.bookDetails[0];
+
+    return {
+      slug: book.slug,
+      name: book.name,
+      description: book.description,
+      image: book.image,
+      currency: book.currency || "USD",
+      price: book.price,
+      discountedPrice: book.discountedPrice,
+      averageRating: book.averageRating || 0,
+      author: book.author || [],
+      publisher: book.publisher,
+      category: book.category?.[0]?.name || null,
+      subcategory: book.subcategory?.[0]?.name || null
+    };
+  } catch (err) {
+    console.error("Error fetching book details:", err.message);
+    return null;
+  }
+}
+
+module.exports = { getBookBySlug };
+
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
