@@ -95,8 +95,8 @@ app.get("/:slug", async (req, res) => {
     `);
   }
 
-  // 🚀 Normal user — redirect to Netlify
-  res.redirect(301, `https://hlpbooks.netlify.app/books/${slug}`);
+  // 🚀 Normal user — redirect to Hidden Legacy Publishers
+  res.redirect(301, `https://www.hiddenlegacypublishers.com/books/${slug}`);
 });
 
 async function getBookBySlug(slug) {
